@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSG47 INBOXING | Sakura Intelligence Hub</title>
+    <title>SHIELD INBOXING | Captain America Tactical Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,7 +12,14 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #120610;
+            background-color: #060913;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(14, 26, 52, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(65, 12, 12, 0.2) 0%, transparent 50%),
+                url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1920&auto=format&fit=crop'); /* Industrial premium dark metallic overlay texture */
+            background-blend-mode: overlay;
+            background-attachment: fixed;
+            background-size: cover;
         }
 
         .serif-title {
@@ -20,22 +27,23 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #120610;
+            background: #060913;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #471a39;
+            background: #1e293b;
             border-radius: 10px;
+            border: 2px solid #060913;
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -47,192 +55,168 @@
             animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.2), inset 0 0 15px rgba(59, 130, 246, 0.1);
             }
-            100% {
-                transform: translateX(100%);
+            50% {
+                box-shadow: 0 0 30px rgba(239, 68, 68, 0.4), inset 0 0 25px rgba(239, 68, 68, 0.2);
             }
         }
 
-        .shimmer-bg {
-            position: relative;
-            overflow: hidden;
+        /* Vibranium Shield Premium Glows */
+        .shield-card {
+            background: rgba(10, 17, 34, 0.85);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
         }
 
-        .shimmer-bg::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(90deg, transparent, rgba(244, 63, 94, 0.15), transparent);
-            animation: shimmer 2.5s infinite;
+        .shield-card:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.15);
         }
 
-        /* Sakura falling animation styles */
-        #sakura-container {
+        .shield-glow-pulse {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        #effect-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 99999;
+        }
+
+        /* Scan-line tech HUD effect */
+        .hud-scanlines {
+            position: relative;
             overflow: hidden;
         }
-
-        .petal {
+        .hud-scanlines::before {
+            content: " ";
+            display: block;
             position: absolute;
-            background: linear-gradient(135deg, #ffb7c5 0%, #ff8da1 100%);
-            border-radius: 12% 100% 12% 100% / 12% 100% 12% 100%;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 4px, 6px 100%;
             pointer-events: none;
-            opacity: 0.85;
-            box-shadow: 0 2px 5px rgba(244, 63, 94, 0.2);
-            transform-origin: left top;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-20px) rotate(0deg) scale(0.8);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.85;
-            }
-            90% {
-                opacity: 0.85;
-            }
-            100% {
-                transform: translateY(105vh) rotate(420deg) scale(1.1);
-                opacity: 0;
-            }
-        }
-
-        @keyframes sway {
-            0%, 100% {
-                margin-left: 0px;
-            }
-            50% {
-                margin-left: 50px;
-            }
-        }
-
-        /* Soft neon bloom glow */
-        .pink-bloom {
-            box-shadow: 0 0 35px -5px rgba(244, 63, 94, 0.15);
-        }
-
-        .pink-bloom-glow-sm {
-            box-shadow: 0 0 15px rgba(244, 63, 94, 0.25);
+            opacity: 0.4;
         }
     </style>
 </head>
 
-<body class="text-rose-100 min-h-screen selection:bg-rose-500/40 overflow-x-hidden custom-scrollbar relative">
+<body class="text-slate-100 min-h-screen selection:bg-red-600/40 overflow-x-hidden custom-scrollbar relative hud-scanlines">
 
-    <!-- Sakura background container -->
-    <div id="sakura-container"></div>
+    <!-- Glitter Fire Canvas Particles -->
+    <canvas id="effect-canvas"></canvas>
 
-    <!-- Decorative Top Sakura Branch (Floating Lightly) -->
-    <div class="absolute top-0 right-0 w-80 h-80 pointer-events-none opacity-20 z-0 bg-radial-gradient">
-        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-rose-300">
-            <!-- Stylized Blossom Outline -->
-            <path d="M100 20 C110 40, 130 40, 140 30 C150 20, 160 30, 155 45 C150 60, 165 70, 175 60 C185 50, 190 65, 175 75 C160 85, 165 105, 150 110 C135 115, 130 135, 115 130 C100 125, 90 140, 80 130 C70 120, 50 125, 45 110 C40 95, 20 90, 30 80 C40 70, 35 50, 50 45 C65 40, 70 20, 85 25 C100 30, 90 0, 100 20 Z" fill="currentColor" opacity="0.15"/>
-        </svg>
-    </div>
-
-    <!-- Sidebar -->
+    <!-- Sidebar Navigation -->
     <aside
-        class="fixed left-0 top-0 h-full w-72 bg-[#1e0a19] border-r border-rose-900/30 p-8 flex flex-col gap-10 hidden lg:flex z-50 pink-bloom">
-        <div class="flex items-center gap-4">
-            <div
-                class="w-12 h-12 bg-gradient-to-br from-pink-400 via-rose-400 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/20 pink-bloom-glow-sm">
-                <i class="fa-solid fa-seedling text-white text-2xl"></i>
+        class="fixed left-0 top-0 h-full w-72 bg-[#090e1a]/95 border-r border-blue-900/30 p-8 flex flex-col gap-10 hidden lg:flex z-50 shadow-2xl">
+        
+        <!-- Captain America Cinematic Inspired Header Shield -->
+        <div class="flex flex-col gap-4">
+            <div class="relative w-full h-36 rounded-2xl overflow-hidden shadow-lg border border-blue-500/30 group">
+                <img src="https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?q=80&w=600&auto=format&fit=crop" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-110 transition-transform duration-700"
+                     alt="Captain America Shield Context" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#090e1a] via-transparent to-transparent"></div>
+                <div class="absolute bottom-3 left-4 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                    <span class="text-xs font-black tracking-widest text-white uppercase">SYSTEM ACTIVE</span>
+                </div>
             </div>
-            <div>
-                <h1 class="font-extrabold text-xl tracking-tighter text-white leading-none serif-title">JSG47</h1>
-                <p class="text-[10px] uppercase tracking-[0.2em] font-black text-rose-300">Sakura Inboxing</p>
+            <div class="flex items-center gap-3 px-1">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-700 via-indigo-600 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-star text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tighter text-white leading-none">COMMANDER</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] font-black text-blue-400">SSR Secure Node</p>
+                </div>
             </div>
         </div>
 
         <nav class="flex flex-col gap-2">
-            <div class="text-[10px] uppercase font-black text-rose-400/50 tracking-widest px-4 mb-4">Core Systems</div>
+            <div class="text-[10px] uppercase font-black text-slate-400/50 tracking-widest px-4 mb-4">Tactical Matrix</div>
             <a href="#"
-                class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-rose-500/20 transition-all pink-bloom-glow-sm">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-gradient-to-r from-blue-700 via-blue-600 to-red-600 text-white shadow-lg shadow-blue-500/20 transition-all hover:brightness-110">
+                <i class="fa-solid fa-crosshairs"></i>
                 <span class="font-bold text-sm tracking-tight">Subject Extractor</span>
             </a>
             <a href="#"
-                class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-rose-950/30 text-rose-300/80 transition-all border border-transparent hover:border-rose-900/40">
-                <i class="fa-solid fa-chart-line"></i>
-                <span class="font-bold text-sm tracking-tight">Deliverability</span>
+                class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-slate-800/40 text-slate-300 transition-all border border-transparent hover:border-blue-900/40">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span class="font-bold text-sm tracking-tight">Vibranium Grid</span>
             </a>
         </nav>
 
-        <div class="mt-auto p-6 bg-rose-950/20 rounded-3xl border border-rose-900/20 backdrop-blur-sm">
-            <p class="text-[10px] text-rose-400/60 mb-3 uppercase tracking-[0.15em] font-black">Active Nodes</p>
-            <div class="space-y-3">
-                <div class="flex items-center justify-between text-xs font-bold">
-                    <span class="text-rose-300/70">Google API</span>
-                    <span class="text-emerald-400 flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        ONLINE
-                    </span>
+        <!-- Dynamic Sergeant Info Widgets -->
+        <div class="mt-auto p-5 bg-slate-900/60 rounded-2xl border border-blue-900/30 backdrop-blur-md">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" 
+                     class="w-8 h-8 rounded-full object-cover border border-red-500/40" alt="Peggy Profile" />
+                <div>
+                    <p class="text-[10px] font-black uppercase text-red-500 tracking-wider leading-none">OPERATIVE</p>
+                    <p class="text-xs font-bold text-white leading-none">Peggy Carter</p>
                 </div>
-                <div class="flex items-center justify-between text-xs font-bold">
-                    <span class="text-rose-300/70">Accounts</span>
-                    <span class="text-pink-200">13 Loaded</span>
+            </div>
+            <div class="space-y-2 text-[11px] font-bold text-slate-400">
+                <div class="flex justify-between">
+                    <span>Serum Level</span>
+                    <span class="text-blue-400">100% Stable</span>
+                </div>
+                <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-red-600 h-full w-full"></div>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Grid -->
     <main class="lg:ml-72 p-6 md:p-12 max-w-6xl mx-auto relative z-10 min-h-screen flex flex-col justify-between">
         
         <!-- Workspace Section -->
         <div>
             <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 class="text-4xl font-extrabold text-white tracking-tight mb-2 serif-title">Subject <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400">Intelligence Hub</span></h2>
-                    <p class="text-rose-300/70 text-base font-medium">Extracting last 3 subject lines across 13 blossom master accounts.
-                    </p>
+                    <h2 class="text-4xl font-extrabold text-white tracking-tight mb-2 serif-title">
+                        Vibranium <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-slate-100 to-red-400">Shield Terminal</span>
+                    </h2>
+                    <p class="text-slate-400 text-base font-medium">Extracting last 3 subject lines across 13 SSR tactical communications channels.</p>
                 </div>
                 <!-- Aesthetic Floating Badge -->
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-pink-500/10 border border-pink-400/20 text-pink-300 text-xs font-bold shadow-sm backdrop-blur-sm">
-                    <i class="fa-solid fa-wind animate-pulse text-pink-400"></i>
-                    <span>Spring Drift Engine Active</span>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-bold shadow-sm backdrop-blur-sm">
+                    <i class="fa-solid fa-shield-halved animate-spin text-red-500" style="animation-duration: 4s;"></i>
+                    <span>Shield Array Status: Optimal</span>
                 </div>
             </header>
 
             <!-- COMMON SECTION (Commonality Detection Banner) -->
             <section id="common-section" class="hidden w-full pb-10">
-                <div
-                    class="bg-gradient-to-r from-[#21091a]/95 to-[#2c0e21]/95 border-t-2 border-pink-400/60 rounded-[2.5rem] p-8 shadow-2xl pink-bloom flex flex-col md:flex-row items-center gap-10 backdrop-blur-md">
+                <div class="bg-gradient-to-r from-[#0d172d]/95 via-[#1a1c26]/95 to-[#1c0f16]/95 border-t-2 border-red-500/60 rounded-[2.5rem] p-8 shadow-2xl shield-glow-pulse flex flex-col md:flex-row items-center gap-10 backdrop-blur-md">
                     <div class="flex-grow w-full">
-                        <label
-                            class="text-[10px] font-black text-pink-300 uppercase tracking-widest mb-4 block">IDENTIFIED
-                            COMMON SUBJECT</label>
+                        <label class="text-[10px] font-black text-red-400 uppercase tracking-widest mb-4 block">
+                            IDENTIFIED VIBRANIUM LINK ALIGNED
+                        </label>
                         <div class="relative group">
                             <input id="common-subject-input" readonly
-                                class="w-full bg-[#12050f] border border-pink-500/20 rounded-2xl py-5 px-6 text-white font-bold text-lg focus:outline-none transition-all group-hover:border-pink-500/40"
-                                placeholder="Analyzing blossom alignment...">
+                                class="w-full bg-[#070b14] border border-blue-500/20 rounded-2xl py-5 px-6 text-white font-bold text-lg focus:outline-none transition-all group-hover:border-red-500/40"
+                                placeholder="Analyzing shield alignment matrices...">
                             <button id="copy-btn"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 p-4 bg-pink-500 hover:bg-pink-400 text-white rounded-xl transition-all active:scale-90 shadow-md shadow-pink-500/30 pink-bloom-glow-sm">
+                                class="absolute right-3 top-1/2 -translate-y-1/2 p-4 bg-red-600 hover:bg-red-500 text-white rounded-xl transition-all active:scale-90 shadow-md shadow-red-500/30">
                                 <i class="fa-solid fa-copy text-lg"></i>
                             </button>
                         </div>
                     </div>
-                    <div
-                        class="w-full md:w-48 flex flex-col items-center justify-center p-6 bg-pink-500/5 rounded-3xl border border-pink-500/10 min-h-[120px] backdrop-blur-sm">
-                        <span class="text-[10px] text-pink-200 font-black mb-1 uppercase tracking-tighter">Match
-                            Percent</span>
-                        <span id="match-percent" class="text-4xl font-black text-pink-400 italic">0%</span>
+                    <div class="w-full md:w-48 flex flex-col items-center justify-center p-6 bg-blue-500/5 rounded-3xl border border-blue-500/10 min-h-[120px] backdrop-blur-sm">
+                        <span class="text-[10px] text-slate-400 font-black mb-1 uppercase tracking-tighter">Match Percent</span>
+                        <span id="match-percent" class="text-4xl font-black text-blue-500 italic">0%</span>
                     </div>
                 </div>
             </section>
@@ -240,30 +224,33 @@
             <div class="flex flex-col gap-8">
                 <!-- TOP: Target Entry -->
                 <section class="w-full">
-                    <div
-                        class="bg-[#1c0a18]/90 border border-rose-900/30 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden backdrop-blur-md pink-bloom">
+                    <div class="shield-card rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
+                        
+                        <!-- Semi-translucent Captain America Action Shot from Unsplash -->
+                        <div class="absolute right-0 top-0 w-80 h-full opacity-10 pointer-events-none mix-blend-luminosity hidden lg:block">
+                            <img src="https://images.unsplash.com/photo-1531259683007-016a7b628fc3?q=80&w=600&auto=format&fit=crop" 
+                                 class="w-full h-full object-cover" alt="Hero representation" />
+                        </div>
+
                         <div class="flex flex-col lg:flex-row gap-8 items-start relative z-10">
                             <div class="flex-grow w-full">
                                 <div class="flex items-center justify-between mb-4">
-                                    <label class="text-xs font-black text-rose-400/60 uppercase tracking-[0.2em]">Target
-                                        Domains</label>
-                                    <span
-                                        class="text-[10px] bg-rose-950/40 border border-rose-900/30 text-rose-300 px-3 py-1 rounded-full font-bold">MULTIPLE
-                                        INPUTS ALLOWED</span>
+                                    <label class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Deployment Target Domains</label>
+                                    <span class="text-[10px] bg-slate-900/60 border border-blue-900/30 text-blue-400 px-3 py-1 rounded-full font-bold">SSR CODES ALLOWED</span>
                                 </div>
                                 <textarea id="domain-input"
-                                    class="w-full h-36 bg-[#120610] border border-rose-900/40 rounded-2xl p-6 text-rose-100 placeholder:text-rose-900/80 focus:outline-none focus:ring-4 focus:ring-pink-500/10 focus:border-pink-400/40 transition-all resize-none text-sm font-mono leading-relaxed"
-                                    placeholder="example-sender.com&#10;delivery-node.net"></textarea>
+                                    class="w-full h-36 bg-[#070b14] border border-blue-900/40 rounded-2xl p-6 text-slate-100 placeholder:text-slate-700 focus:outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-400/40 transition-all resize-none text-sm font-mono leading-relaxed"
+                                    placeholder="example-sender.com&#10;security-node.net"></textarea>
                             </div>
                             <div class="w-full lg:w-72 lg:pt-8 flex flex-col gap-3">
                                 <button id="sync-btn"
-                                    class="group w-full py-5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-rose-500/20 active:scale-[0.97] pink-bloom-glow-sm">
+                                    class="group w-full py-5 bg-gradient-to-r from-blue-700 via-blue-600 to-red-600 hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-blue-500/20 active:scale-[0.97]">
                                     <i class="fa-solid fa-wand-magic-sparkles group-hover:rotate-12 transition-transform"></i>
-                                    <span class="tracking-widest uppercase">Sync Network</span>
+                                    <span class="tracking-widest uppercase">Launch Signal</span>
                                 </button>
                                 <button id="clear-btn"
-                                    class="hidden w-full py-3 text-rose-400/60 hover:text-red-400 text-[10px] font-black transition-colors uppercase tracking-widest">
-                                    <i class="fa-solid fa-trash-can mr-2"></i> Clear Workspace
+                                    class="hidden w-full py-3 text-slate-500 hover:text-red-500 text-[10px] font-black transition-colors uppercase tracking-widest">
+                                    <i class="fa-solid fa-trash-can mr-2"></i> Clear Grid
                                 </button>
                             </div>
                         </div>
@@ -272,27 +259,23 @@
 
                 <!-- MIDDLE: Feed -->
                 <section class="w-full">
-                    <div
-                        class="bg-[#1c0a18]/90 border border-rose-900/30 rounded-[2.5rem] overflow-hidden shadow-2xl min-h-[450px] flex flex-col backdrop-blur-md pink-bloom">
-                        <div
-                            class="px-8 py-6 border-b border-rose-900/30 flex items-center justify-between bg-rose-950/20">
+                    <div class="shield-card rounded-[2.5rem] overflow-hidden shadow-2xl min-h-[450px] flex flex-col">
+                        <div class="px-8 py-6 border-b border-blue-900/30 flex items-center justify-between bg-slate-900/20">
                             <h3 class="text-base font-black text-white flex items-center gap-3 tracking-tight">
-                                DATA EXTRACTION FEED
-                                <div id="scan-progress" class="hidden h-1.5 w-32 bg-rose-950 rounded-full overflow-hidden border border-rose-900/20">
-                                    <div class="h-full bg-gradient-to-r from-pink-400 to-rose-400 animate-[loading_2s_infinite]"></div>
+                                TACTICAL DATA FEED
+                                <div id="scan-progress" class="hidden h-1.5 w-32 bg-slate-900 rounded-full overflow-hidden border border-blue-900/20">
+                                    <div class="h-full bg-gradient-to-r from-blue-600 to-red-600 animate-[loading_2s_infinite]"></div>
                                 </div>
                             </h3>
                         </div>
 
                         <!-- Empty State -->
                         <div id="empty-state" class="flex-grow flex flex-col items-center justify-center py-24 text-center">
-                            <div
-                                class="w-20 h-20 bg-pink-500/5 rounded-full flex items-center justify-center mb-6 border border-pink-500/10 animate-pulse">
-                                <i class="fa-solid fa-seedling text-3xl text-pink-400/40"></i>
+                            <div class="w-20 h-20 bg-blue-500/5 rounded-full flex items-center justify-center mb-6 border border-blue-500/10 animate-pulse">
+                                <i class="fa-solid fa-shield-halved text-3xl text-red-500/50"></i>
                             </div>
-                            <h4 class="text-lg font-bold text-rose-200/80 mb-1">Awaiting Blossom Alignment</h4>
-                            <p class="text-xs text-rose-400/60 font-bold uppercase tracking-widest">Input target to initiate
-                                synchronization</p>
+                            <h4 class="text-lg font-bold text-slate-300 mb-1">Grid System Disengaged</h4>
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Awaiting spatial frequency synchronization keys</p>
                         </div>
 
                         <!-- Results Table Container -->
@@ -300,15 +283,14 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
-                                        <tr
-                                            class="text-rose-400/50 text-[10px] uppercase tracking-[0.2em] font-black border-b border-rose-900/30">
+                                        <tr class="text-slate-500 text-[10px] uppercase tracking-[0.2em] font-black border-b border-blue-900/30">
                                             <th class="px-8 py-6">Identity</th>
                                             <th class="px-8 py-6">Domain</th>
                                             <th class="px-8 py-6">Inbox Subjects (Last 3)</th>
                                             <th class="px-8 py-6 text-right">Verification</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="results-body" class="divide-y divide-rose-900/20">
+                                    <tbody id="results-body" class="divide-y divide-blue-900/20">
                                         <!-- Dynamic Rows -->
                                     </tbody>
                                 </table>
@@ -319,33 +301,25 @@
             </div>
         </div>
 
-        <!-- Cherry Blossom Branches at Bottom Left & Bottom Right -->
-        <footer class="mt-16 pt-8 border-t border-rose-900/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-rose-400/40 relative">
+        <!-- Footer systems -->
+        <footer class="mt-16 pt-8 border-t border-blue-900/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 relative">
             <div class="flex items-center gap-2">
-                <i class="fa-solid fa-leaf text-pink-400/50 animate-bounce"></i>
-                <span>Designed with love & cherry blossoms.</span>
+                <i class="fa-solid fa-star text-red-500 animate-bounce"></i>
+                <span>Designed with SSR military design frameworks.</span>
             </div>
-            <div>JSG47 Secure Terminal Systems v2.5.0</div>
+            <div>JSG47 SSR Command Hub v2.8.0</div>
 
-            <!-- Absolute SVG Cherry Blossoms on Left Frame -->
-            <div class="absolute -bottom-6 -left-6 w-32 h-32 opacity-40 pointer-events-none mix-blend-screen hidden md:block">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-pink-400">
-                    <path d="M0 100 C 30 70, 40 80, 50 60 C 60 40, 70 50, 80 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="50" cy="60" r="6" fill="#ffa0b4" />
-                    <circle cx="80" cy="40" r="4" fill="#ffa0b4" />
-                    <path d="M48 57 C 45 50, 40 52, 45 57 C 42 62, 46 64, 48 57 Z" fill="#ffb7c5"/>
-                    <path d="M52 63 C 55 70, 60 68, 55 63 C 58 58, 54 56, 52 63 Z" fill="#ffb7c5"/>
+            <!-- Decorative Star Vector Background Graphic on bottom frame left -->
+            <div class="absolute -bottom-6 -left-6 w-32 h-32 opacity-10 pointer-events-none hidden md:block">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-blue-500">
+                    <path d="M50 0 L63 35 L100 35 L70 57 L83 95 L50 72 L17 95 L30 57 L0 35 L37 35 Z" fill="currentColor"/>
                 </svg>
             </div>
 
-            <!-- Absolute SVG Cherry Blossoms on Right Frame -->
-            <div class="absolute -bottom-6 -right-6 w-32 h-32 opacity-40 pointer-events-none mix-blend-screen hidden md:block">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-pink-400">
-                    <path d="M100 100 C 70 70, 60 80, 50 60 C 40 40, 30 50, 20 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="50" cy="60" r="6" fill="#ffa0b4" />
-                    <circle cx="20" cy="40" r="4" fill="#ffa0b4" />
-                    <path d="M52 57 C 55 50, 60 52, 55 57 C 58 62, 54 64, 52 57 Z" fill="#ffb7c5"/>
-                    <path d="M48 63 C 45 70, 40 68, 45 63 C 42 58, 46 56, 48 63 Z" fill="#ffb7c5"/>
+            <!-- Star Vector Background Graphic on bottom frame right -->
+            <div class="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 pointer-events-none hidden md:block">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-red-500">
+                    <path d="M50 0 L63 35 L100 35 L70 57 L83 95 L50 72 L17 95 L30 57 L0 35 L37 35 Z" fill="currentColor"/>
                 </svg>
             </div>
         </footer>
@@ -388,36 +362,180 @@
 
         let lastResults = [];
 
-        // Dynamic Sakura Floating Generator
-        function createPetal() {
-            const container = document.getElementById('sakura-container');
-            if (!container) return;
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            
-            // Randomize size, sway, delay and duration
-            const size = Math.random() * 8 + 8; // 8px to 16px
-            petal.style.width = `${size}px`;
-            petal.style.height = `${size}px`;
-            petal.style.left = `${Math.random() * 100}vw`;
-            
-            const duration = Math.random() * 6 + 6; // 6s to 12s
-            petal.style.animation = `fall ${duration}s linear infinite, sway ${Math.random() * 4 + 2}s ease-in-out infinite`;
-            petal.style.delay = `${Math.random() * 5}s`;
-            
-            container.appendChild(petal);
+        const canvas = document.getElementById('effect-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-            // Housekeeping: remove elements after their cycle to save performance
-            setTimeout(() => {
-                petal.remove();
-            }, (duration + 5) * 1000);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class GlitterFireParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                // Randomized drift velocity representing rising fiery embers
+                this.vx = (Math.random() - 0.5) * 3;
+                this.vy = (Math.random() - 1.2) * 4; // Rise upward
+                this.size = Math.random() * 4 + 2;
+                this.maxLife = Math.random() * 25 + 15;
+                this.life = this.maxLife;
+                
+                // Color palette (fiery gold sparks + Captain America patriotic reds & blues)
+                const colors = [
+                    '#ef4444', // Crimson Red
+                    '#3b82f6', // Electric Star Blue
+                    '#f59e0b', // Glowing Amber
+                    '#ffffff', // Radiant Star White
+                    '#fef08a'  // Glitter Gold
+                ];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.shimmerSpeed = Math.random() * 0.1 + 0.05;
+                this.angle = Math.random() * Math.PI * 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.05; // Slightly curve downwards after initial explosive burst
+                this.life--;
+                this.angle += this.shimmerSpeed;
+            }
+
+            draw() {
+                const alpha = this.life / this.maxLife;
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                
+                // Create a glittering star-like diamond fire spark
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size);
+                ctx.lineTo(this.size * 0.5, 0);
+                ctx.lineTo(0, this.size);
+                ctx.lineTo(-this.size * 0.5, 0);
+                ctx.closePath();
+                ctx.fill();
+                
+                ctx.restore();
+            }
         }
 
-        // Initialize beautiful falling petals
-        for (let i = 0; i < 20; i++) {
-            setTimeout(createPetal, Math.random() * 3000);
+        // Capture continuous mouse positions to spawn glitter fire trail
+        window.addEventListener('mousemove', (e) => {
+            for (let i = 0; i < 3; i++) {
+                particles.push(new GlitterFireParticle(e.clientX, e.clientY));
+            }
+        });
+
+        // Loop execution function for graphics
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(drawScene);
         }
-        setInterval(createPetal, 450);
+        drawScene();
+
+
+        // We configure a multi-oscillator synthesizer to emulate a punchy impact followed by metallic clangs
+        function playVibraniumClank() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+
+                // 1. Drum Thump (Vibranium impact base frequency)
+                const bodyOsc = audioCtx.createOscillator();
+                const bodyGain = audioCtx.createGain();
+                bodyOsc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                bodyOsc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                bodyGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                bodyGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                
+                bodyOsc.connect(bodyGain);
+                bodyGain.connect(audioCtx.destination);
+                bodyOsc.start();
+                bodyOsc.stop(audioCtx.currentTime + 0.35);
+
+                // 2. High-Frequency Metallic Ringing (Shield ring sound)
+                const metallicOsc = audioCtx.createOscillator();
+                const metallicGain = audioCtx.createGain();
+                metallicOsc.type = 'triangle';
+                metallicOsc.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch ring
+                metallicOsc.frequency.linearRampToValueAtTime(1050, audioCtx.currentTime + 0.15);
+                metallicGain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                metallicGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+
+                metallicOsc.connect(metallicGain);
+                metallicGain.connect(audioCtx.destination);
+                metallicOsc.start();
+                metallicOsc.stop(audioCtx.currentTime + 0.7);
+
+                // 3. Digital Sparkle (High-pass filtered noise blast)
+                const bufferSize = audioCtx.sampleRate * 0.15; // Short burst
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noiseNode = audioCtx.createBufferSource();
+                noiseNode.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.setValueAtTime(2000, audioCtx.currentTime);
+
+                const noiseGain = audioCtx.createGain();
+                noiseGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
+                noiseNode.connect(filter);
+                filter.connect(noiseGain);
+                noiseGain.connect(audioCtx.destination);
+                noiseNode.start();
+                noiseNode.stop(audioCtx.currentTime + 0.16);
+
+            } catch (err) {
+                console.log('Audio Context initialization deferred until direct physical user gesture');
+            }
+        }
+
+        // Global Listener triggers dynamic sound and a splash of fire sparkles anywhere you click
+        window.addEventListener('click', (e) => {
+            playVibraniumClank();
+            
+            // Spawn a radiant ring of gold and red fire particles directly on click!
+            for (let i = 0; i < 18; i++) {
+                const p = new GlitterFireParticle(e.clientX, e.clientY);
+                // Give explosive directional velocity to click sparks
+                const angle = (i / 18) * Math.PI * 2;
+                const speed = Math.random() * 6 + 3;
+                p.vx = Math.cos(angle) * speed;
+                p.vy = Math.sin(angle) * speed;
+                p.maxLife = Math.random() * 30 + 20;
+                particles.push(p);
+            }
+        });
+
+
+        function playVictorySound() {
+            const victoryAudio = new Audio('kd.mp3');
+            victoryAudio.play().catch(err => console.log("Direct sound launch delay:", err));
+        }
 
         async function getAccess(refreshToken) {
             const res = await fetch('https://oauth2.googleapis.com/token', {
@@ -475,7 +593,7 @@
 
             if (accountNames.length < totalAccounts) {
                 dom.percent.textContent = "...";
-                dom.commonInput.value = "Finalizing account analysis...";
+                dom.commonInput.value = "Assembling dynamic sector synchronization coordinates...";
                 return;
             }
 
@@ -497,44 +615,45 @@
 
             if (topCount === totalAccounts) {
                 dom.commonInput.value = topSubject;
-                dom.percent.className = "text-4xl font-black text-pink-400 italic";
+                dom.percent.className = "text-4xl font-black text-emerald-400 italic";
+                playVictorySound();
             } else if (topCount > 1) {
-                dom.commonInput.value = `Partial Match Found: "${topSubject}"`;
-                dom.percent.className = "text-4xl font-black text-rose-400 italic";
+                dom.commonInput.value = `Vibranium Overlap Identified: "${topSubject}"`;
+                dom.percent.className = "text-4xl font-black text-blue-400 italic";
             } else {
-                dom.commonInput.value = "No shared subject lines found across the network.";
+                dom.commonInput.value = "No shared alignment headers detected in the deployment quadrant.";
                 dom.percent.textContent = "0%";
             }
         }
 
         function renderRow(accName, domain, subjects) {
             const row = document.createElement('tr');
-            row.className = "hover:bg-pink-500/[0.03] transition-colors group animate-slide";
+            row.className = "hover:bg-blue-500/[0.03] transition-colors group animate-slide";
 
             const hasData = subjects && subjects.length > 0;
             const statusHtml = hasData
                 ? `<div class="flex items-center gap-1.5 justify-end text-[9px] font-black text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">VERIFIED INBOX</div>`
                 : subjects === null
-                    ? `<div class="flex items-center gap-1.5 justify-end text-[9px] font-black text-rose-400 bg-rose-400/10 px-3 py-1.5 rounded-full border border-rose-400/20 text-center">AUTH EXPIRED</div>`
-                    : `<div class="flex items-center gap-1.5 justify-end text-[9px] font-black text-rose-300/40 bg-rose-950/40 border border-rose-900/20 px-3 py-1.5 rounded-full">NO MATCH</div>`;
+                    ? `<div class="flex items-center gap-1.5 justify-end text-[9px] font-black text-red-500 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20 text-center">AUTH EXPIRED</div>`
+                    : `<div class="flex items-center gap-1.5 justify-end text-[9px] font-black text-slate-500 bg-slate-900/40 border border-slate-800/20 px-3 py-1.5 rounded-full">NO MATCH</div>`;
 
             let subjectsHtml = subjects === null
-                ? `<span class="text-rose-400/80 text-xs font-bold">Please update token for ${accName}</span>`
+                ? `<span class="text-red-400/80 text-xs font-bold">Please update access parameters for node: ${accName}</span>`
                 : subjects.length === 0
-                    ? `<span class="text-rose-300/30 text-xs italic font-medium">Domain not detected in Inbox</span>`
+                    ? `<span class="text-slate-500 text-xs italic font-medium">Channel secure: Domain not present</span>`
                     : subjects.map((s, i) => `
-                    <div class="flex items-center justify-between gap-3 mb-1.5 p-2.5 rounded-xl bg-rose-950/30 border border-rose-900/10 text-xs hover:border-pink-500/30 transition-all backdrop-blur-sm">
+                    <div class="flex items-center justify-between gap-3 mb-1.5 p-2.5 rounded-xl bg-slate-900/40 border border-blue-900/10 text-xs hover:border-red-500/30 transition-all backdrop-blur-sm">
                         <div class="flex items-center gap-3 overflow-hidden">
-                            <span class="w-4 h-4 flex-shrink-0 flex items-center justify-center text-[8px] font-black bg-rose-950 text-rose-400 rounded-md">${i + 1}</span>
-                            <span class="text-rose-100 font-bold truncate max-w-[240px]">${s.subject}</span>
+                            <span class="w-4 h-4 flex-shrink-0 flex items-center justify-center text-[8px] font-black bg-slate-950 text-blue-400 rounded-md">${i + 1}</span>
+                            <span class="text-slate-100 font-bold truncate max-w-[240px]">${s.subject}</span>
                         </div>
-                        <span class="text-[9px] font-bold text-rose-400/50 flex-shrink-0 italic">${s.date}</span>
+                        <span class="text-[9px] font-bold text-blue-400/50 flex-shrink-0 italic">${s.date}</span>
                     </div>
                 `).join('');
 
             row.innerHTML = `
                 <td class="px-8 py-5"><span class="text-white font-black text-sm tracking-tight">${accName}</span></td>
-                <td class="px-8 py-5"><span class="text-pink-400/70 font-mono text-[10px] font-black">${domain}</span></td>
+                <td class="px-8 py-5"><span class="text-blue-400/70 font-mono text-[10px] font-black">${domain}</span></td>
                 <td class="px-8 py-5">${subjectsHtml}</td>
                 <td class="px-8 py-5 text-right">${statusHtml}</td>
             `;
@@ -546,7 +665,7 @@
             if (domains.length === 0) return;
 
             dom.sync.disabled = true;
-            dom.sync.innerHTML = `<i class="fa-solid fa-seedling animate-spin"></i><span class="tracking-widest">HARVESTING DATA...</span>`;
+            dom.sync.innerHTML = `<i class="fa-solid fa-sync animate-spin"></i><span class="tracking-widest">TRANSMITTING OVER THE BEAM...</span>`;
             dom.empty.classList.add('hidden');
             dom.table.classList.remove('hidden');
             dom.clear.classList.remove('hidden');
@@ -573,7 +692,7 @@
 
             calculateCommonality(lastResults);
             dom.sync.disabled = false;
-            dom.sync.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i><span class="tracking-widest uppercase">Sync Network</span>`;
+            dom.sync.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i><span class="tracking-widest uppercase">Launch Signal</span>`;
         });
 
         dom.copy.addEventListener('click', () => {
@@ -588,10 +707,10 @@
 
                 const originalIcon = dom.copy.innerHTML;
                 dom.copy.innerHTML = `<i class="fa-solid fa-check"></i>`;
-                dom.copy.className = dom.copy.className.replace('bg-pink-500', 'bg-emerald-600');
+                dom.copy.className = dom.copy.className.replace('bg-red-600', 'bg-emerald-600');
                 setTimeout(() => {
                     dom.copy.innerHTML = originalIcon;
-                    dom.copy.className = dom.copy.className.replace('bg-emerald-600', 'bg-pink-500');
+                    dom.copy.className = dom.copy.className.replace('bg-emerald-600', 'bg-red-600');
                 }, 2000);
             }
         });
